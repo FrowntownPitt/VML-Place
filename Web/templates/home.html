@@ -107,7 +107,7 @@
 						grids[x][y].style.visibility = "hidden";
 					} else{
 						grids[x][y].style.visibility = "visible";
-						colorGrid(x, y, gridData[x][y]);
+						colorGrid(y, x, gridData[x][y]);
 					}
 				}
 			}
@@ -174,7 +174,7 @@
 		var row = table.insertRow(table.rows.length);
 		for(var c = 0; c < maxY; c++){
 			grids[r][c] = row.insertCell(c);
-			var gr = createGrid(r, c);
+			var gr = createGrid(c, r);
 			grids[r][c].style.visibility = "hidden";
 			grids[r][c].appendChild(gr);
 		}

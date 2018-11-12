@@ -20,16 +20,16 @@ def wrangle():
 def set_shape(shape):
     global active_grid
     #shape is a list of tuples, index of each active panel
-    #sets shape of data, with all pixels set to default value
-
-    
+    data = json.loads(shape)
+    print(data)
     #TODO
     for x in range(15):
         for y in range(15):
-            if shape[] is None:
-                active_grid[index] = np.zeros((32, 32, 3))
+            if [x,y] in data:
+                if active_grid[x,y] is None:
+                    active_grid[x,y] = np.zeros((32, 32, 3))
             else:
-                active_grid[index] = None
+                active_grid[x,y] = None
     return "Good"
     
 @app.route("/set_pixel/<grid_data>/<coordinate>/<rgb>", methods=['POST'])
