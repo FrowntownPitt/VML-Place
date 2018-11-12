@@ -6,7 +6,7 @@ import json
 app = Flask(__name__)
 
 active_grid = np.full((15, 15) , fill_value=None)
-active_grid[0,0] = np.zeros((32, 32, 3), dtype=numpy.int8)
+active_grid[0,0] = np.zeros((32, 32, 3), dtype=int)
 
 @app.route("/")
 def hello():
