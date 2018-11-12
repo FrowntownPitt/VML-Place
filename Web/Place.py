@@ -6,7 +6,7 @@ import json
 app = Flask(__name__)
 
 active_grid = np.full((15, 15) , fill_value=None)
-active_grid[0,0] = np.zeros((32, 32, 3))
+active_grid[0,0] = np.zeros((32, 32, 3), dtype=numpy.int8)
 
 @app.route("/")
 def hello():
@@ -27,7 +27,7 @@ def set_shape(shape):
         for y in range(15):
             if [x,y] in data:
                 if active_grid[x,y] is None:
-                    active_grid[x,y] = np.zeros((32, 32, 3))
+                    active_grid[x,y] = np.zeros((32, 32, 3), dtype=numpy.int8)
             else:
                 active_grid[x,y] = None
     return "Good"
