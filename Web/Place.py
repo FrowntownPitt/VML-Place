@@ -2,11 +2,13 @@
 from flask import Flask, request, session, url_for, redirect, render_template, abort, g, flash, _app_ctx_stack
 import numpy as np
 import json
+from threading import Lock
 
 app = Flask(__name__)
 
 active_grid = np.full((15, 15) , fill_value=None)
 active_grid[0,0] = np.zeros((32, 32, 3), dtype=int)
+lock = Lock()
 
 @app.route("/")
 def hello():
@@ -23,13 +25,14 @@ def set_shape(shape):
     data = json.loads(shape)
     print(data)
     #TODO
-    for x in range(15):
-        for y in range(15):
-            if [x,y] in data:
-                if active_grid[x,y] is None:
-                    active_grid[x,y] = np.zeros((32, 32, 3), dtype=int)
-            else:
-                active_grid[x,y] = None
+    with lock:
+        for x in range(15):
+            for y in range(15):
+                if [x,y] in data:
+                    if active_grid[x,y] is None:
+                        active_grid[x,y] = np.zeros((32, 32, 3), dtype=int)
+                else:
+                    active_grid[x,y] = None
     return "Good"
     
 @app.route("/set_pixel/<grid_data>/<coordinate>/<rgb>", methods=['POST'])
@@ -39,7 +42,8 @@ def set_pixel(grid_data, coordinate, rgb):
     grid = tuple([int(x) for x in grid_data.split(",")])
     cord = tuple([int(x) for x in coordinate.split(",")])
     global active_grid
-    active_grid[grid][cord] = [int(x) for x in tuple(rgb.split(","))]
+    with lock:
+        active_grid[grid][cord] = [int(x) for x in tuple(rgb.split(","))]
     return "Good"
 
 @app.route("/get_grid")
