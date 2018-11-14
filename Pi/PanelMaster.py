@@ -14,9 +14,10 @@ WHITE_PIXEL = [0x1, 0x1, 0x1]
 BLACK_PIXEL = [0x0, 0x0, 0x0]
 
 
-panel = Panel(bus, ADDR)
+panel1 = Panel(bus, 0x04)
+#panel2 = Panel(bus, 0x05)
 
-panels = [[panel]]
+panels = [[panel1]]
     
 #panel.fill_rect([0,0], [32,32], WHITE_PIXEL)
 
@@ -28,11 +29,15 @@ while True:
 
     for x in range(len(panels)):
         for y in range(len(panels[x])):
-            if(panel is not None):
-                grid = data[x][y]
-                for i in range(len(grid)):
-                    for j in range(len(grid[i])):
-                        panels[x][y].draw_pixel([j, i], grid[j][i])
-                        time.sleep(0.0001)
+            try:
+                if(panels[x][y] is not None):
+                    grid = data[x][y]
+                    for i in range(len(grid)):
+                        for j in range(len(grid[i])):
+                            panels[x][y].draw_pixel([j, i], grid[j][i])
+                            time.sleep(0.0001)
+            except:
+                print(y, " Failed")
+                time.sleep(1)                
 
     time.sleep(0)
